@@ -22,11 +22,12 @@ const App: React.FC = () => {
   }, [entries]);
 
   // Add a new time entry
-  const handleAddEntry = (task: string, hours: number) => {
+  const handleAddEntry = (task: string, hours: number,minutes: number) => {
     const newEntry: TimeEntry = {
       id: Date.now(),
       task,
       hours,
+      minutes
     };
     setEntries([...entries, newEntry]);
   };

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 interface Props {
-  onAdd: (task: string, hours: number) => void;
+  onAdd: (task: string, hours: number,minutes: number) => void;
 }
 
 const TimeForm: React.FC<Props> = ({ onAdd }) => {
-    const [task, setTask] = useState('');
+  const [task, setTask] = useState('');
   const [hourValue, setHourValue] = useState('');
   const [minuteValue, setMinuteValue] = useState('');
 
@@ -17,26 +17,28 @@ const TimeForm: React.FC<Props> = ({ onAdd }) => {
     const minutes = parseInt(minuteValue, 10) || 0;
 
     if (!trimmedTask) {
-      alert('Task name cannot be empty.');
-      return;
-    }
+    alert('Task name cannot be empty.');
+    return;
+  }
 
-    if (
-      hours < 0 || hours > 24 ||
-      minutes < 0 || minutes >= 60
-    ) {
-      alert('Please enter valid hours (0–24) and minutes (0–59).');
-      return;
-    }
+  if (hours < 0 || hours > 24 || minutes < 0 || minutes >= 60) {
+    alert('Please enter valid hours (0–24) and minutes (0–59).');
+    return;
+  }
 
-    const totalHours = hours + minutes / 60;
+  const totalMinutes = hours * 60 + minutes;
+  if (totalMinutes <= 0) {
+    alert('Time must be greater than zero.');
+    return;
+  }
 
-    if (totalHours <= 0) {
-      alert('Time must be greater than zero.');
-      return;
-    }
+  if (totalMinutes > 1440) {
+    alert('Total time per entry cannot exceed 24 hours.');
+    return;
+  }
 
-    onAdd(trimmedTask, totalHours);
+  onAdd(trimmedTask, hours, minutes);
+
     setTask('');
     setHourValue('');
     setMinuteValue('');
